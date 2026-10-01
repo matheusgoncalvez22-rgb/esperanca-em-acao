@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Esperança em Ação - Organização não governamental dedicada a projetos sociais e ações de solidariedade."
+    >
+
+    <title>Esperança em Ação - ONG</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!--
+        CABEÇALHO DA APLICAÇÃO
+
+        O conteúdo do cabeçalho é criado pelo JavaScript.
+        A SPA mantém apenas o espaço onde ele será inserido.
+    -->
+
+    <div id="cabecalho"></div>
+
+
+    <!--
+        ÁREA PRINCIPAL DA SPA
+
+        Todas as telas serão carregadas aqui pelo JavaScript:
+        - Início
+        - Projetos
+        - Cadastro
+        - Sobre nós
+        - Contato
+    -->
+
+    <main id="app"></main>
+
+
+    <!--
+        RODAPÉ
+
+        O rodapé também será criado pelos templates JavaScript.
+    -->
+
+    <div id="rodape"></div>
+
+
+    <!--
+        TOAST
+
+        É criado/atualizado pelo navegacao.js quando
+        uma ação for realizada com sucesso.
+    -->
+
+    <div
+        id="toast"
+        class="toast"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+    ></div>
+
+
+    <!--
+        MÓDULOS JAVASCRIPT
+
+        A ordem é importante porque os arquivos
+        dependem uns dos outros.
+    -->
+
+    <script src="js/storage.js" defer></script>
+
+    <script src="js/templates.js" defer></script>
+
+    <script src="js/formulario.js" defer></script>
+
+    <script src="js/navegacao.js" defer></script>
+
+    <script src="js/app.js" defer></script>
+
+</body>
+
+</html>

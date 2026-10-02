@@ -599,3 +599,33 @@ footer p {
     background-color: #eaf7ef;
     color: #1f6b3d;
 }
+
+/* ==============================
+   ACESSIBILIDADE
+================================ */
+
+/* Foco visível para navegação por teclado */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #f2c94c;
+    outline-offset: 3px;
+}
+
+
+/* Redução de movimento */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+}

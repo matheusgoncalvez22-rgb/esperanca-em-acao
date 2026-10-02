@@ -1,629 +1,409 @@
-/* ==========================================
-   FORMULARIO.JS
-   Validação e envio do formulário
-   Esperança em Ação
-========================================== */
 
 "use strict";
 
-
 window.AppForm = {
 
-    /* ======================================
-       INICIAR FORMULÁRIO
-    ====================================== */
+	iniciar() {
 
-    iniciar() {
+		const formulario =
+			document.getElementById("formularioCadastro");
 
-        const formulario =
-            document.getElementById(
-                "formularioCadastro"
-            );
+		if (!formulario) {
+			console.warn(
+				"Formulário de cadastro não encontrado."
+			);
+			return;
+		}
 
+		formulario.addEventListener(
+			"submit",
+			evento => this.enviar(evento)
+		);
 
-        if (!formulario) {
+		this.configurarValidacaoEmTempoReal(formulario);
+	},
 
-            console.warn(
-                "Formulário de cadastro não encontrado."
-            );
 
-            return;
-        }
+	configurarValidacaoEmTempoReal(formulario) {
 
+		const campos =
+			formulario.querySelectorAll(
+				"input, select, textarea"
+			);
 
-        formulario.addEventListener(
-            "submit",
-            evento => this.enviar(evento)
-        );
+		campos.forEach(campo => {
 
+			campo.addEventListener(
+				"blur",
+				() => this.validarCampo(campo)
+			);
 
-        this.configurarValidacaoEmTempoReal(
-            formulario
-        );
-    },
+			campo.addEventListener(
+				"input",
+				() => {
 
+					if (
+						campo.classList.contains(
+							"campo-com-erro"
+						)
+					) {
+						this.validarCampo(campo);
+					}
+				}
+			);
 
-    /* ======================================
-       CONFIGURAR VALIDAÇÃO EM TEMPO REAL
-    ====================================== */
+			campo.addEventListener(
+				"change",
+				() => this.validarCampo(campo)
+			);
+		});
+	},
 
-    configurarValidacaoEmTempoReal(
-        formulario
-    ) {
 
-        const campos =
-            formulario.querySelectorAll(
-                "input, select, textarea"
-            );
+	validarCampo(campo) {
 
+		const nome = campo.name;
+		let mensagem = "";
 
-        campos.forEach(campo => {
+		if (nome === "nome") {
+			mensagem = this.validarNome(campo.value);
+		}
 
-            campo.addEventListener(
-                "blur",
-                () => {
+		else if (nome === "email") {
+			mensagem = this.validarEmail(campo.value);
+		}
 
-                    this.validarCampo(
-                        campo
-                    );
+		else if (nome === "telefone") {
+			mensagem = this.validarTelefone(campo.value);
+		}
 
-                }
-            );
+		else if (nome === "area") {
+			mensagem = this.validarArea(campo.value);
+		}
 
+		else if (nome === "mensagem") {
+			mensagem = this.validarMensagem(campo.value);
+		}
 
-            campo.addEventListener(
-                "input",
-                () => {
+		this.mostrarErro(campo, mensagem);
 
-                    if (
-                        campo.classList.contains(
-                            "campo-com-erro"
-                        )
-                    ) {
+		return mensagem === "";
+	},
 
-                        this.validarCampo(
-                            campo
-                        );
-                    }
 
-                }
-            );
+	validarNome(valor) {
 
+		const nome = valor.trim();
 
-            campo.addEventListener(
-                "change",
-                () => {
+		if (!nome) {
+			return "Informe seu nome completo.";
+		}
 
-                    this.validarCampo(
-                        campo
-                    );
+		if (nome.length < 3) {
+			return "Digite pelo menos 3 caracteres.";
+		}
 
-                }
-            );
+		if (!nome.includes(" ")) {
+			return "Informe nome e sobrenome.";
+		}
 
-        });
-    },
+		return "";
+	},
 
 
-    /* ======================================
-       VALIDAR UM CAMPO
-    ====================================== */
+	validarEmail(valor) {
 
-    validarCampo(campo) {
+		const email = valor.trim();
 
-        const nome =
-            campo.name;
+		if (!email) {
+			return "Informe seu e-mail.";
+		}
 
+		const formatoEmail =
+			/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        let mensagem = "";
+		if (!formatoEmail.test(email)) {
+			return "Digite um e-mail válido.";
+		}
 
+		return "";
+	},
 
-        if (nome === "nome") {
 
-            mensagem =
-                this.validarNome(
-                    campo.value
-                );
-        }
+	validarTelefone(valor) {
 
+		const telefone = valor.trim();
 
-        else if (nome === "email") {
+		if (!telefone) {
+			return "Informe seu telefone.";
+		}
 
-            mensagem =
-                this.validarEmail(
-                    campo.value
-                );
-        }
+		const numeros =
+			telefone.replace(/\D/g, "");
 
+		if (
+			numeros.length < 10 ||
+			numeros.length > 11
+		) {
+			return "Digite um telefone válido.";
+		}
 
-        else if (nome === "telefone") {
+		return "";
+	},
 
-            mensagem =
-                this.validarTelefone(
-                    campo.value
-                );
-        }
 
+	validarArea(valor) {
 
-        else if (nome === "area") {
+		if (!valor) {
+			return "Selecione uma área de interesse.";
+		}
 
-            mensagem =
-                this.validarArea(
-                    campo.value
-                );
-        }
+		return "";
+	},
 
 
-        else if (nome === "mensagem") {
+	validarMensagem(valor) {
 
-            mensagem =
-                this.validarMensagem(
-                    campo.value
-                );
-        }
+		const mensagem = valor.trim();
 
+		if (
+			mensagem.length > 0 &&
+			mensagem.length < 10
+		) {
+			return "Digite pelo menos 10 caracteres ou deixe o campo vazio.";
+		}
 
-        this.mostrarErro(
-            campo,
-            mensagem
-        );
+		return "";
+	},
 
 
-        return mensagem === "";
-    },
+	mostrarErro(campo, mensagem) {
 
+		const erro =
+			document.getElementById(
+				`erro-${campo.name}`
+			);
 
-    /* ======================================
-       VALIDAR NOME
-    ====================================== */
+		if (mensagem) {
 
-    validarNome(valor) {
+			campo.classList.add(
+				"campo-com-erro"
+			);
 
-        const nome =
-            valor.trim();
+			campo.classList.remove(
+				"campo-valido"
+			);
 
+			campo.setAttribute(
+				"aria-invalid",
+				"true"
+			);
 
-        if (!nome) {
+			if (erro) {
+				erro.textContent = mensagem;
+			}
 
-            return "Informe seu nome completo.";
-        }
+		} else {
 
+			campo.classList.remove(
+				"campo-com-erro"
+			);
 
-        if (nome.length < 3) {
+			campo.classList.add(
+				"campo-valido"
+			);
 
-            return "Digite pelo menos 3 caracteres.";
-        }
+			campo.setAttribute(
+				"aria-invalid",
+				"false"
+			);
 
+			if (erro) {
+				erro.textContent = "";
+			}
+		}
+	},
 
-        if (!nome.includes(" ")) {
 
-            return "Informe nome e sobrenome.";
-        }
+	validarFormulario(formulario) {
 
+		const campos = [
+			formulario.elements.nome,
+			formulario.elements.email,
+			formulario.elements.telefone,
+			formulario.elements.area,
+			formulario.elements.mensagem
+		];
 
-        return "";
-    },
+		let formularioValido = true;
 
+		campos.forEach(campo => {
 
-    /* ======================================
-       VALIDAR E-MAIL
-    ====================================== */
+			const campoValido =
+				this.validarCampo(campo);
 
-    validarEmail(valor) {
+			if (!campoValido) {
+				formularioValido = false;
+			}
+		});
 
-        const email =
-            valor.trim();
+		return formularioValido;
+	},
 
 
-        if (!email) {
+	enviar(evento) {
 
-            return "Informe seu e-mail.";
-        }
+		evento.preventDefault();
 
+		const formulario =
+			evento.currentTarget;
 
-        const formatoEmail =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		const valido =
+			this.validarFormulario(formulario);
 
+		if (!valido) {
 
-        if (
-            !formatoEmail.test(email)
-        ) {
+			this.mostrarFeedback(
+				"Corrija os campos destacados antes de enviar o cadastro.",
+				"erro"
+			);
 
-            return "Digite um e-mail válido.";
-        }
+			const primeiroErro =
+				formulario.querySelector(
+					".campo-com-erro"
+				);
 
+			if (primeiroErro) {
+				primeiroErro.focus();
+			}
 
-        return "";
-    },
+			return;
+		}
 
 
-    /* ======================================
-       VALIDAR TELEFONE
-    ====================================== */
+		if (
+			!window.AppStorage ||
+			!AppStorage.disponivel()
+		) {
 
-    validarTelefone(valor) {
+			this.mostrarFeedback(
+				"Não foi possível salvar o cadastro neste navegador.",
+				"erro"
+			);
 
-        const telefone =
-            valor.trim();
+			return;
+		}
 
 
-        if (!telefone) {
+		const cadastro = {
 
-            return "Informe seu telefone.";
-        }
+			nome:
+				formulario.elements.nome.value.trim(),
 
+			email:
+				formulario.elements.email.value.trim(),
 
-        const numeros =
-            telefone.replace(
-                /\D/g,
-                ""
-            );
+			telefone:
+				formulario.elements.telefone.value.trim(),
 
+			area:
+				formulario.elements.area.value,
 
-        if (
-            numeros.length < 10 ||
-            numeros.length > 11
-        ) {
+			mensagem:
+				formulario.elements.mensagem.value.trim()
+		};
 
-            return "Digite um telefone válido.";
-        }
 
+		const salvo =
+			AppStorage.salvarCadastro(cadastro);
 
-        return "";
-    },
 
+		if (!salvo) {
 
-    /* ======================================
-       VALIDAR ÁREA
-    ====================================== */
+			this.mostrarFeedback(
+				"O cadastro não pôde ser salvo. Tente novamente.",
+				"erro"
+			);
 
-    validarArea(valor) {
+			return;
+		}
 
-        if (!valor) {
 
-            return "Selecione uma área de interesse.";
-        }
+		this.mostrarFeedback(
+			"Cadastro realizado com sucesso! Obrigado por querer fazer parte da Esperança em Ação.",
+			"sucesso"
+		);
 
 
-        return "";
-    },
+		formulario.reset();
 
 
-    /* ======================================
-       VALIDAR MENSAGEM
-    ====================================== */
+		const campos =
+			formulario.querySelectorAll(
+				"input, select, textarea"
+			);
 
-    validarMensagem(valor) {
 
-        const mensagem =
-            valor.trim();
+		campos.forEach(campo => {
 
+			campo.classList.remove(
+				"campo-valido",
+				"campo-com-erro"
+			);
 
-        if (
-            mensagem.length > 0 &&
-            mensagem.length < 10
-        ) {
+			campo.removeAttribute(
+				"aria-invalid"
+			);
+		});
 
-            return "Digite pelo menos 10 caracteres ou deixe o campo vazio.";
-        }
 
+		if (
+			window.AppNavigation &&
+			typeof AppNavigation.mostrarToast ===
+			"function"
+		) {
 
-        return "";
-    },
+			AppNavigation.mostrarToast(
+				"Cadastro realizado com sucesso!"
+			);
+		}
+	},
 
 
-    /* ======================================
-       MOSTRAR ERRO DO CAMPO
-    ====================================== */
+	mostrarFeedback(mensagem, tipo) {
 
-    mostrarErro(
-        campo,
-        mensagem
-    ) {
+		const feedback =
+			document.getElementById(
+				"feedbackFormulario"
+			);
 
-        const erro =
-            document.getElementById(
-                `erro-${campo.name}`
-            );
+		if (!feedback) {
+			return;
+		}
 
+		feedback.textContent = mensagem;
 
-        if (mensagem) {
+		feedback.className =
+			"feedback-formulario";
 
-            campo.classList.add(
-                "campo-com-erro"
-            );
+		feedback.classList.add(tipo);
 
+		feedback.setAttribute(
+			"role",
+			"alert"
+		);
 
-            campo.classList.remove(
-                "campo-valido"
-            );
+		const reduzirMovimento =
+			window.matchMedia &&
+			window.matchMedia(
+				"(prefers-reduced-motion: reduce)"
+			).matches;
 
-
-            campo.setAttribute(
-                "aria-invalid",
-                "true"
-            );
-
-
-            if (erro) {
-
-                erro.textContent =
-                    mensagem;
-            }
-
-        }
-
-        else {
-
-            campo.classList.remove(
-                "campo-com-erro"
-            );
-
-
-            campo.classList.add(
-                "campo-valido"
-            );
-
-
-            campo.setAttribute(
-                "aria-invalid",
-                "false"
-            );
-
-
-            if (erro) {
-
-                erro.textContent =
-                    "";
-            }
-
-        }
-    },
-
-
-    /* ======================================
-       VALIDAR FORMULÁRIO COMPLETO
-    ====================================== */
-
-    validarFormulario(formulario) {
-
-        const campos = [
-
-            formulario.elements.nome,
-
-            formulario.elements.email,
-
-            formulario.elements.telefone,
-
-            formulario.elements.area,
-
-            formulario.elements.mensagem
-
-        ];
-
-
-        let formularioValido = true;
-
-
-        campos.forEach(campo => {
-
-            const campoValido =
-                this.validarCampo(
-                    campo
-                );
-
-
-            if (!campoValido) {
-
-                formularioValido = false;
-            }
-
-        });
-
-
-        return formularioValido;
-    },
-
-
-    /* ======================================
-       ENVIAR FORMULÁRIO
-    ====================================== */
-
-    enviar(evento) {
-
-        evento.preventDefault();
-
-
-        const formulario =
-            evento.currentTarget;
-
-
-        const valido =
-            this.validarFormulario(
-                formulario
-            );
-
-
-        if (!valido) {
-
-            this.mostrarFeedback(
-                "Corrija os campos destacados antes de enviar o cadastro.",
-                "erro"
-            );
-
-
-            const primeiroErro =
-                formulario.querySelector(
-                    ".campo-com-erro"
-                );
-
-
-            if (primeiroErro) {
-
-                primeiroErro.focus();
-            }
-
-
-            return;
-        }
-
-
-        /* ================================
-           VERIFICAR LOCALSTORAGE
-        ================================= */
-
-        if (
-            !window.AppStorage ||
-            !AppStorage.disponivel()
-        ) {
-
-            this.mostrarFeedback(
-                "Não foi possível salvar o cadastro neste navegador.",
-                "erro"
-            );
-
-
-            return;
-        }
-
-
-        /* ================================
-           PEGAR DADOS DO FORMULÁRIO
-        ================================= */
-
-        const cadastro = {
-
-            nome:
-                formulario.elements.nome.value.trim(),
-
-            email:
-                formulario.elements.email.value.trim(),
-
-            telefone:
-                formulario.elements.telefone.value.trim(),
-
-            area:
-                formulario.elements.area.value,
-
-            mensagem:
-                formulario.elements.mensagem.value.trim()
-
-        };
-
-
-        /* ================================
-           SALVAR
-        ================================= */
-
-        const salvo =
-            AppStorage.salvarCadastro(
-                cadastro
-            );
-
-
-        if (!salvo) {
-
-            this.mostrarFeedback(
-                "O cadastro não pôde ser salvo. Tente novamente.",
-                "erro"
-            );
-
-
-            return;
-        }
-
-
-        /* ================================
-           SUCESSO
-        ================================= */
-
-        this.mostrarFeedback(
-            "Cadastro realizado com sucesso! Obrigado por querer fazer parte da Esperança em Ação.",
-            "sucesso"
-        );
-
-
-        formulario.reset();
-
-
-        const campos =
-            formulario.querySelectorAll(
-                "input, select, textarea"
-            );
-
-
-        campos.forEach(campo => {
-
-            campo.classList.remove(
-                "campo-valido",
-                "campo-com-erro"
-            );
-
-
-            campo.removeAttribute(
-                "aria-invalid"
-            );
-
-        });
-
-
-        if (
-            window.AppNavigation &&
-            typeof AppNavigation.mostrarToast ===
-            "function"
-        ) {
-
-            AppNavigation.mostrarToast(
-                "Cadastro realizado com sucesso!"
-            );
-        }
-
-    },
-
-
-    /* ======================================
-       MOSTRAR FEEDBACK DO FORMULÁRIO
-    ====================================== */
-
-    mostrarFeedback(
-        mensagem,
-        tipo
-    ) {
-
-        const feedback =
-            document.getElementById(
-                "feedbackFormulario"
-            );
-
-
-        if (!feedback) {
-            return;
-        }
-
-
-        feedback.textContent =
-            mensagem;
-
-
-        feedback.className =
-            "feedback-formulario";
-
-
-        feedback.classList.add(
-            tipo
-        );
-
-
-        feedback.setAttribute(
-            "role",
-            "alert"
-        );
-
-
-        feedback.scrollIntoView({
-            behavior: "smooth",
-            block: "nearest"
-        });
-    }
-
+		feedback.scrollIntoView({
+			behavior: reduzirMovimento
+				? "auto"
+				: "smooth",
+			block: "nearest"
+		});
+	}
 };

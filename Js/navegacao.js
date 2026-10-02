@@ -1,360 +1,487 @@
-/* ==========================================
-   NAVEGACAO.JS
-   Lógica de navegação da SPA
-   Esperança em Ação
-========================================== */
+"use strict";
 
 window.AppNavigation = {
 
-    /* ======================================
-       INICIAR A SPA
-    ====================================== */
+	/* ======================================
+	   INICIALIZAÇÃO
+	====================================== */
 
-    iniciar() {
+	iniciar() {
 
-        this.carregarEstrutura();
+		this.carregarEstrutura();
 
-        window.addEventListener(
-            "hashchange",
-            () => this.processarRota()
-        );
+		window.addEventListener(
+			"hashchange",
+			() => this.processarRota()
+		);
 
-        document.addEventListener(
-            "click",
-            evento => this.interceptarLinks(evento)
-        );
+		document.addEventListener(
+			"click",
+			evento => this.interceptarClique(evento)
+		);
 
-        this.processarRota();
-    },
+		this.processarRota();
+	},
 
 
-    /* ======================================
-       CARREGAR CABEÇALHO E RODAPÉ
-    ====================================== */
+	/* ======================================
+	   CARREGAR HEADER E FOOTER
+	====================================== */
 
-    carregarEstrutura() {
+	carregarEstrutura() {
 
-        const cabecalho =
-            document.getElementById("cabecalho");
+		const cabecalho =
+			document.getElementById("cabecalho");
 
-        const rodape =
-            document.getElementById("rodape");
+		const rodape =
+			document.getElementById("rodape");
 
+		if (cabecalho) {
+			cabecalho.innerHTML =
+				AppTemplates.cabecalho();
+		}
 
-        if (cabecalho) {
+		if (rodape) {
+			rodape.innerHTML =
+				AppTemplates.rodape();
+		}
+	},
 
-            cabecalho.innerHTML =
-                AppTemplates.cabecalho();
-        }
 
+	/* ======================================
+	   INTERCEPTAR CLIQUES
+	====================================== */
 
-        if (rodape) {
+	interceptarClique(evento) {
 
-            rodape.innerHTML =
-                AppTemplates.rodape();
-        }
-    },
+		const botaoMenu =
+			evento.target.closest(".menu-controle");
 
+		if (botaoMenu) {
 
-    /* ======================================
-       INTERCEPTAR LINKS
-    ====================================== */
+			this.alternarMenu();
 
-    interceptarLinks(evento) {
+			return;
+		}
 
-        const link =
-            evento.target.closest(
-                "a[data-rota]"
-            );
 
+		const link =
+			evento.target.closest("a[data-rota]");
 
-        if (!link) {
-            return;
-        }
+		if (!link) {
+			return;
+		}
 
 
-        const rota =
-            link.dataset.rota;
+		const rota =
+			link.dataset.rota;
 
+		if (!rota) {
+			return;
+		}
 
-        if (!rota) {
-            return;
-        }
 
+		evento.preventDefault();
 
-        evento.preventDefault();
+		this.irPara(rota);
 
-        this.irPara(rota);
-    },
+		this.fecharMenu();
+	},
 
 
-    /* ======================================
-       MUDAR DE ROTA
-    ====================================== */
+	/* ======================================
+	   MENU HAMBÚRGUER
+	====================================== */
 
-    irPara(rota) {
+	alternarMenu() {
 
-        if (!rota) {
-            rota = "inicio";
-        }
+		const botao =
+			document.querySelector(".menu-controle");
 
+		const menu =
+			document.getElementById("menuPrincipal");
 
-        window.location.hash =
-            rota;
-    },
+		if (!botao || !menu) {
+			return;
+		}
 
 
-    /* ======================================
-       PROCESSAR ROTA
-    ====================================== */
+		const aberto =
+			botao.getAttribute("aria-expanded") === "true";
 
-    processarRota() {
 
-        let rota =
-            window.location.hash
-                .replace("#", "")
-                .trim();
+		if (aberto) {
 
+			this.fecharMenu();
 
-        if (!rota) {
-            rota = "inicio";
-        }
+		} else {
 
+			this.abrirMenu();
+		}
+	},
 
-        const app =
-            document.getElementById("app");
 
+	abrirMenu() {
 
-        if (!app) {
+		const botao =
+			document.querySelector(".menu-controle");
 
-            console.error(
-                "Elemento #app não encontrado."
-            );
+		const menu =
+			document.getElementById("menuPrincipal");
 
-            return;
-        }
+		if (!botao || !menu) {
+			return;
+		}
 
 
-        /* ==================================
-           INÍCIO
-        ================================== */
+		botao.setAttribute(
+			"aria-expanded",
+			"true"
+		);
 
-        if (rota === "inicio") {
+		botao.setAttribute(
+			"aria-label",
+			"Fechar menu"
+		);
 
-            app.innerHTML =
-                AppTemplates.inicio();
 
-            this.atualizarMenu("inicio");
+		menu.classList.add("menu-aberto");
+	},
 
-            this.irParaTopo();
 
-            return;
-        }
+	fecharMenu() {
 
+		const botao =
+			document.querySelector(".menu-controle");
 
-        /* ==================================
-           PROJETOS
-        ================================== */
+		const menu =
+			document.getElementById("menuPrincipal");
 
-        if (rota === "projetos") {
+		if (!botao || !menu) {
+			return;
+		}
 
-            app.innerHTML =
-                AppTemplates.paginaProjetos();
 
-            this.atualizarMenu("projetos");
+		botao.setAttribute(
+			"aria-expanded",
+			"false"
+		);
 
-            this.irParaTopo();
+		botao.setAttribute(
+			"aria-label",
+			"Abrir menu"
+		);
 
-            return;
-        }
 
+		menu.classList.remove("menu-aberto");
+	},
 
-        /* ==================================
-           CADASTRO
-        ================================== */
 
-        if (rota === "cadastro") {
+	/* ======================================
+	   IR PARA UMA ROTA
+	====================================== */
 
-            app.innerHTML =
-                AppTemplates.cadastro();
+	irPara(rota) {
 
-            this.atualizarMenu("cadastro");
+		if (!rota) {
+			rota = "inicio";
+		}
 
-            if (
-                window.AppForm &&
-                typeof AppForm.iniciar === "function"
-            ) {
+		window.location.hash = rota;
+	},
 
-                AppForm.iniciar();
-            }
 
-            this.irParaTopo();
+	/* ======================================
+	   PROCESSAR ROTA
+	====================================== */
 
-            return;
-        }
+	processarRota() {
 
+		let rota =
+			window.location.hash
+				.replace("#", "")
+				.trim();
 
-        /* ==================================
-           SOBRE
-        ================================== */
 
-        if (rota === "sobre") {
+		if (!rota) {
+			rota = "inicio";
+		}
 
-            app.innerHTML =
-                AppTemplates.paginaSobre();
 
-            this.atualizarMenu("sobre");
+		const app =
+			document.getElementById("app");
 
-            this.irParaTopo();
 
-            return;
-        }
+		if (!app) {
 
+			console.error(
+				"Elemento #app não encontrado."
+			);
 
-        /* ==================================
-           CONTATO
-        ================================== */
+			return;
+		}
 
-        if (rota === "contato") {
 
-            app.innerHTML =
-                AppTemplates.paginaContato();
+		switch (rota) {
 
-            this.atualizarMenu("contato");
+			case "inicio":
 
-            this.irParaTopo();
+				app.innerHTML =
+					AppTemplates.inicio();
 
-            return;
-        }
+				this.atualizarMenu("inicio");
 
+				break;
 
-        /* ==================================
-           ROTA NÃO ENCONTRADA
-        ================================== */
 
-        app.innerHTML =
-            AppTemplates.naoEncontrado();
+			case "projetos":
 
-        this.atualizarMenu("");
+				app.innerHTML =
+					AppTemplates.paginaProjetos();
 
-        this.irParaTopo();
-    },
+				this.atualizarMenu("projetos");
 
+				break;
 
-    /* ======================================
-       ATUALIZAR MENU
-    ====================================== */
 
-    atualizarMenu(rotaAtual) {
+			case "cadastro":
 
-        const links =
-            document.querySelectorAll(
-                "nav a[data-rota]"
-            );
+				app.innerHTML =
+					AppTemplates.cadastro();
 
+				this.atualizarMenu("cadastro");
 
-        links.forEach(link => {
 
-            link.classList.remove(
-                "menu-ativo"
-            );
+				if (
+					window.AppForm &&
+					typeof AppForm.iniciar === "function"
+				) {
 
-            link.removeAttribute(
-                "aria-current"
-            );
+					AppForm.iniciar();
+				}
 
+				break;
 
-            if (
-                link.dataset.rota === rotaAtual
-            ) {
 
-                link.classList.add(
-                    "menu-ativo"
-                );
+			case "sobre":
 
-                link.setAttribute(
-                    "aria-current",
-                    "page"
-                );
-            }
+				app.innerHTML =
+					AppTemplates.paginaSobre();
 
-        });
-    },
+				this.atualizarMenu("sobre");
 
+				break;
 
-    /* ======================================
-       IR PARA O TOPO
-    ====================================== */
 
-    irParaTopo() {
+			case "contato":
 
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    },
+				app.innerHTML =
+					AppTemplates.paginaContato();
 
+				this.atualizarMenu("contato");
 
-    /* ======================================
-       MOSTRAR TOAST
-    ====================================== */
+				break;
 
-    mostrarToast(mensagem) {
 
-        let toast =
-            document.getElementById("toast");
+			default:
 
+				app.innerHTML =
+					AppTemplates.naoEncontrado();
 
-        if (!toast) {
+				this.atualizarMenu("");
 
-            toast =
-                document.createElement("div");
+				break;
+		}
 
-            toast.id = "toast";
 
-            toast.className =
-                "toast";
+		this.fecharMenu();
 
-            toast.setAttribute(
-                "role",
-                "status"
-            );
+		this.irParaTopo();
 
-            toast.setAttribute(
-                "aria-live",
-                "polite"
-            );
+		this.focarConteudo();
+	},
 
-            document.body.appendChild(
-                toast
-            );
-        }
 
+	/* ======================================
+	   ATUALIZAR MENU ATIVO
+	====================================== */
 
-        toast.innerHTML = `
-            <span>✓</span>
-            ${mensagem}
-        `;
+	atualizarMenu(rotaAtual) {
 
+		const links =
+			document.querySelectorAll(
+				"nav a[data-rota]"
+			);
 
-        toast.classList.add(
-            "mostrar"
-        );
 
+		links.forEach(link => {
 
-        clearTimeout(
-            this.timerToast
-        );
+			link.classList.remove(
+				"menu-ativo"
+			);
 
+			link.removeAttribute(
+				"aria-current"
+			);
 
-        this.timerToast =
-            setTimeout(() => {
 
-                toast.classList.remove(
-                    "mostrar"
-                );
+			if (
+				link.dataset.rota ===
+				rotaAtual
+			) {
 
-            }, 4000);
-    }
+				link.classList.add(
+					"menu-ativo"
+				);
+
+				link.setAttribute(
+					"aria-current",
+					"page"
+				);
+			}
+		});
+	},
+
+
+	/* ======================================
+	   FOCAR CONTEÚDO PRINCIPAL
+	====================================== */
+
+	focarConteudo() {
+
+		const app =
+			document.getElementById("app");
+
+
+		if (!app) {
+			return;
+		}
+
+
+		app.setAttribute(
+			"tabindex",
+			"-1"
+		);
+
+
+		try {
+
+			app.focus({
+				preventScroll: true
+			});
+
+		} catch (erro) {
+
+			app.focus();
+		}
+	},
+
+
+	/* ======================================
+	   VOLTAR PARA O TOPO
+	====================================== */
+
+	irParaTopo() {
+
+		const prefereMenosMovimento =
+			window.matchMedia &&
+			window.matchMedia(
+				"(prefers-reduced-motion: reduce)"
+			).matches;
+
+
+		window.scrollTo({
+			top: 0,
+			behavior:
+				prefereMenosMovimento
+					? "auto"
+					: "smooth"
+		});
+	},
+
+
+	/* ======================================
+	   TOAST
+	====================================== */
+
+	mostrarToast(mensagem) {
+
+		let toast =
+			document.getElementById("toast");
+
+
+		if (!toast) {
+
+			toast =
+				document.createElement("div");
+
+			toast.id = "toast";
+
+			toast.className = "toast";
+
+			toast.setAttribute(
+				"role",
+				"status"
+			);
+
+			toast.setAttribute(
+				"aria-live",
+				"polite"
+			);
+
+			toast.setAttribute(
+				"aria-atomic",
+				"true"
+			);
+
+			document.body.appendChild(toast);
+		}
+
+
+		toast.replaceChildren();
+
+
+		const icone =
+			document.createElement("span");
+
+		icone.textContent = "✓";
+
+		icone.setAttribute(
+			"aria-hidden",
+			"true"
+		);
+
+
+		const texto =
+			document.createElement("span");
+
+		texto.textContent =
+			mensagem;
+
+
+		toast.appendChild(icone);
+
+		toast.appendChild(texto);
+
+
+		toast.classList.add(
+			"mostrar"
+		);
+
+
+		clearTimeout(
+			this.timerToast
+		);
+
+
+		this.timerToast =
+			setTimeout(() => {
+
+				toast.classList.remove(
+					"mostrar"
+				);
+
+			}, 4000);
+	}
 
 };

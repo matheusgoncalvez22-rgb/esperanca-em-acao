@@ -1,100 +1,97 @@
-/* ==========================================
-    TEMPLATES.JS
-    Conteúdo HTML das páginas da SPA
-    Esperança em Ação
-========================================== */
+"use strict";
 
-window.AppTemplates = {
-
-    /* ======================================
-       CABEÇALHO
-    ====================================== */
+const appTemplates = {
 
     cabecalho() {
-
         return `
             <header>
 
-                <h1>Esperança em Ação</h1>
+                <a class="link-pular" href="#app">
+                    Pular para o conteúdo principal
+                </a>
 
-                <nav aria-label="Navegação principal">
+                <div class="cabecalho-conteudo">
 
-                    <ul>
+                    <h1>Esperança em Ação</h1>
 
-                        <li>
-                            <a
-                                href="#inicio"
-                                data-rota="inicio"
-                            >
-                                Início
-                            </a>
-                        </li>
+                    <button
+                        type="button"
+                        class="menu-controle"
+                        aria-expanded="false"
+                        aria-controls="menuPrincipal"
+                        aria-label="Abrir menu"
+                    >
+                        <span class="menu-icone" aria-hidden="true">☰</span>
+                    </button>
 
-                        <li>
-                            <a
-                                href="#projetos"
-                                data-rota="projetos"
-                            >
-                                Projetos
-                            </a>
-                        </li>
+                    <nav aria-label="Navegação principal">
 
-                        <li>
-                            <a
-                                href="#cadastro"
-                                data-rota="cadastro"
-                            >
-                                Cadastro
-                            </a>
-                        </li>
+                        <ul id="menuPrincipal">
 
-                        <li>
-                            <a
-                                href="#sobre"
-                                data-rota="sobre"
-                            >
-                                Sobre nós
-                            </a>
-                        </li>
+                            <li>
+                                <a href="#inicio" data-rota="inicio">
+                                    Início
+                                </a>
+                            </li>
 
-                        <li>
-                            <a
-                                href="#contato"
-                                data-rota="contato"
-                            >
-                                Contato
-                            </a>
-                        </li>
+                            <li>
+                                <a href="#projetos" data-rota="projetos">
+                                    Projetos
+                                </a>
+                            </li>
 
-                    </ul>
+                            <li>
+                                <a href="#cadastro" data-rota="cadastro">
+                                    Cadastro
+                                </a>
+                            </li>
 
-                </nav>
+                            <li>
+                                <a href="#sobre" data-rota="sobre">
+                                    Sobre nós
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#contato" data-rota="contato">
+                                    Contato
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </nav>
+
+                </div>
 
             </header>
         `;
     },
 
 
-    /* ======================================
-       RODAPÉ
-    ====================================== */
-
     rodape() {
-
         return `
             <footer>
 
-                <h2>
-                    Entre em contato
-                </h2>
+                <h2>Entre em contato</h2>
 
-                <p>
-                    E-mail: contato@esperancaemacao.org
-                </p>
+                <address>
 
-                <p>
-                    Telefone: (11) 99999-9999
-                </p>
+                    <p>
+                        E-mail:
+                        <a href="mailto:contato@esperancaemacao.org">
+                            contato@esperancaemacao.org
+                        </a>
+                    </p>
+
+                    <p>
+                        Telefone:
+                        <a href="tel:+5511999999999">
+                            (11) 99999-9999
+                        </a>
+                    </p>
+
+                </address>
 
                 <p>
                     &copy; 2026 Esperança em Ação -
@@ -106,90 +103,85 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       DADOS DOS PROJETOS
-    ====================================== */
-
     projetos: [
 
         {
+            id: "alimentando-esperanca",
             nome: "Alimentando Esperança",
-            descricao:
-                "Campanha de arrecadação de alimentos para famílias em situação de vulnerabilidade.",
+            descricao: "Campanha de arrecadação de alimentos para famílias em situação de vulnerabilidade.",
             categoria: "Doação"
         },
 
         {
+            id: "educacao-para-todos",
             nome: "Educação para Todos",
-            descricao:
-                "Projeto voltado para apoiar crianças e jovens por meio da educação e do acesso ao conhecimento.",
+            descricao: "Projeto voltado para apoiar crianças e jovens por meio da educação e do acesso ao conhecimento.",
             categoria: "Educação"
         },
 
         {
+            id: "maos-que-ajudam",
             nome: "Mãos que Ajudam",
-            descricao:
-                "Programa que conecta voluntários a ações sociais realizadas em diferentes comunidades.",
+            descricao: "Programa que conecta voluntários a ações sociais realizadas em diferentes comunidades.",
             categoria: "Voluntariado"
         },
 
         {
+            id: "acao-comunitaria",
             nome: "Ação Comunitária",
-            descricao:
-                "Ações de apoio às comunidades, oferecendo atividades e recursos para pessoas que precisam de ajuda.",
+            descricao: "Ações de apoio às comunidades, oferecendo atividades e recursos para pessoas que precisam de ajuda.",
             categoria: "Ação social"
         },
 
         {
+            id: "campanha-do-agasalho",
             nome: "Campanha do Agasalho",
-            descricao:
-                "Arrecadação de roupas e cobertores para pessoas em situação de vulnerabilidade.",
+            descricao: "Arrecadação de roupas e cobertores para pessoas em situação de vulnerabilidade.",
             categoria: "Doação"
         },
 
         {
+            id: "voluntariado-em-acao",
             nome: "Voluntariado em Ação",
-            descricao:
-                "Programa que conecta pessoas interessadas em ajudar com atividades e campanhas sociais.",
+            descricao: "Programa que conecta pessoas interessadas em ajudar com atividades e campanhas sociais.",
             categoria: "Voluntariado"
         }
 
     ],
 
 
-    /* ======================================
-       CARD DE PROJETO
-    ====================================== */
-
-    cardProjeto(projeto) {
+    cardProjeto(projeto = {}) {
+        const projetoId = projeto.id || "projeto";
+        const nome = projeto.nome || "Projeto";
+        const descricao = projeto.descricao || "Descrição em breve.";
+        const categoria = projeto.categoria || "Geral";
 
         return `
-            <article class="card-projeto">
+            <article class="card-projeto" id="${projetoId}">
 
-                <span class="badge">
+                <span
+                    class="badge"
+                    aria-label="Status do projeto: ativo"
+                >
                     Ativo
                 </span>
 
-                <h3>
-                    ${projeto.nome}
-                </h3>
+                <h3>${nome}</h3>
 
                 <p>
-                    ${projeto.descricao}
+                    ${descricao}
                 </p>
 
                 <p>
-                    <strong>
-                        Área:
-                    </strong>
-
-                    ${projeto.categoria}
+                    <strong>Área:</strong>
+                    ${categoria}
                 </p>
 
                 <a
                     class="botao"
                     href="#projetos"
                     data-rota="projetos"
+                    aria-label="Saiba mais sobre o projeto ${nome}"
                 >
                     Saiba mais
                 </a>
@@ -199,32 +191,25 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       PÁGINA INICIAL
-    ====================================== */
-
     inicio() {
 
-        const projetosDestaque =
-            this.projetos
-                .slice(0, 3)
-                .map(
-                    projeto =>
-                        this.cardProjeto(projeto)
-                )
-                .join("");
-
+        const listaProjetos = Array.isArray(this.projetos) ? this.projetos : [];
+        const projetosDestaque = listaProjetos
+            .slice(0, 3)
+            .map(projeto => this.cardProjeto(projeto))
+            .join("");
 
         return `
 
             <section
                 id="inicio"
                 class="hero"
+                aria-labelledby="titulo-principal"
             >
 
                 <div class="hero-conteudo">
 
-                    <h2>
+                    <h2 id="titulo-principal">
                         Transformando vidas através da solidariedade
                     </h2>
 
@@ -249,72 +234,55 @@ window.AppTemplates = {
                     class="imagem-principal"
                     src="https://images.unsplash.com/photo-1559027615-cd4628902d4a"
                     alt="Grupo de pessoas reunidas participando de uma ação voluntária"
+                    width="1200"
+                    height="800"
+                    loading="eager"
+                    decoding="async"
                 >
 
             </section>
 
 
-            <section class="feedback">
+            <section class="feedback" aria-label="Informação">
 
-                <div class="alerta sucesso">
-
-                    <strong>
-                        ✓ Sucesso!
-                    </strong>
+                <div
+                    class="alerta sucesso"
+                    role="status"
+                >
+                    <strong>✓ Sucesso!</strong>
 
                     <span>
                         Os projetos estão disponíveis para consulta.
                     </span>
-
                 </div>
 
             </section>
 
 
-            <section class="impacto">
+            <section
+                class="impacto"
+                aria-labelledby="titulo-impacto"
+            >
 
-                <h2>
+                <h2 id="titulo-impacto">
                     Nosso impacto
                 </h2>
 
                 <div class="impacto-cards">
 
                     <div class="card-impacto">
-
-                        <h3>
-                            500+
-                        </h3>
-
-                        <p>
-                            Pessoas ajudadas
-                        </p>
-
+                        <h3>500+</h3>
+                        <p>Pessoas ajudadas</p>
                     </div>
 
-
                     <div class="card-impacto">
-
-                        <h3>
-                            20+
-                        </h3>
-
-                        <p>
-                            Projetos realizados
-                        </p>
-
+                        <h3>20+</h3>
+                        <p>Projetos realizados</p>
                     </div>
 
-
                     <div class="card-impacto">
-
-                        <h3>
-                            100+
-                        </h3>
-
-                        <p>
-                            Voluntários
-                        </p>
-
+                        <h3>100+</h3>
+                        <p>Voluntários</p>
                     </div>
 
                 </div>
@@ -322,16 +290,17 @@ window.AppTemplates = {
             </section>
 
 
-            <section id="projetos">
+            <section
+                id="projetos"
+                aria-labelledby="titulo-projetos"
+            >
 
-                <h2>
+                <h2 id="titulo-projetos">
                     Conheça nossos projetos
                 </h2>
 
                 <div class="projetos-cards">
-
                     ${projetosDestaque}
-
                 </div>
 
             </section>
@@ -340,9 +309,12 @@ window.AppTemplates = {
             ${this.sobre()}
 
 
-            <section id="ajuda">
+            <section
+                id="ajuda"
+                aria-labelledby="titulo-ajuda"
+            >
 
-                <h2>
+                <h2 id="titulo-ajuda">
                     Como você pode ajudar
                 </h2>
 
@@ -365,17 +337,16 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       SOBRE
-    ====================================== */
-
     sobre() {
 
         return `
 
-            <section id="sobre">
+            <section
+                id="sobre"
+                aria-labelledby="titulo-sobre"
+            >
 
-                <h2>
+                <h2 id="titulo-sobre">
                     Sobre nós
                 </h2>
 
@@ -385,9 +356,7 @@ window.AppTemplates = {
                     precisam de apoio.
                 </p>
 
-                <h3>
-                    Nossa missão
-                </h3>
+                <h3>Nossa missão</h3>
 
                 <p>
                     Promover ações sociais que contribuam para melhorar
@@ -395,9 +364,7 @@ window.AppTemplates = {
                     a solidariedade.
                 </p>
 
-                <h3>
-                    Como atuamos
-                </h3>
+                <h3>Como atuamos</h3>
 
                 <p>
                     Desenvolvemos projetos sociais, campanhas de
@@ -410,26 +377,18 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       PÁGINA DE PROJETOS
-    ====================================== */
-
     paginaProjetos() {
 
-        const cards =
-            this.projetos
-                .map(
-                    projeto =>
-                        this.cardProjeto(projeto)
-                )
-                .join("");
-
+        const listaProjetos = Array.isArray(this.projetos) ? this.projetos : [];
+        const cards = listaProjetos
+            .map(projeto => this.cardProjeto(projeto))
+            .join("");
 
         return `
 
-            <section>
+            <section aria-labelledby="titulo-projetos">
 
-                <h2>
+                <h2 id="titulo-projetos">
                     Nossos projetos
                 </h2>
 
@@ -439,17 +398,18 @@ window.AppTemplates = {
                 </p>
 
                 <div class="projetos-cards">
-
                     ${cards}
-
                 </div>
 
             </section>
 
 
-            <section id="voluntariado">
+            <section
+                id="voluntariado"
+                aria-labelledby="titulo-voluntariado"
+            >
 
-                <h2>
+                <h2 id="titulo-voluntariado">
                     Voluntariado
                 </h2>
 
@@ -458,9 +418,7 @@ window.AppTemplates = {
                     atividades como voluntário.
                 </p>
 
-                <h3>
-                    Como participar
-                </h3>
+                <h3>Como participar</h3>
 
                 <p>
                     Para se tornar um voluntário, basta preencher
@@ -469,21 +427,13 @@ window.AppTemplates = {
 
                 <ol>
 
-                    <li>
-                        Escolha uma atividade de interesse.
-                    </li>
+                    <li>Escolha uma atividade de interesse.</li>
 
-                    <li>
-                        Entre em contato com a ONG.
-                    </li>
+                    <li>Entre em contato com a ONG.</li>
 
-                    <li>
-                        Faça seu cadastro como voluntário.
-                    </li>
+                    <li>Faça seu cadastro como voluntário.</li>
 
-                    <li>
-                        Participe das ações.
-                    </li>
+                    <li>Participe das ações.</li>
 
                 </ol>
 
@@ -498,9 +448,12 @@ window.AppTemplates = {
             </section>
 
 
-            <section id="doacoes">
+            <section
+                id="doacoes"
+                aria-labelledby="titulo-doacoes"
+            >
 
-                <h2>
+                <h2 id="titulo-doacoes">
                     Campanhas de doação
                 </h2>
 
@@ -509,38 +462,23 @@ window.AppTemplates = {
                     e permitem que mais pessoas sejam atendidas.
                 </p>
 
-                <h3>
-                    O que pode ser doado?
-                </h3>
+                <h3>O que pode ser doado?</h3>
 
                 <ul>
-
-                    <li>
-                        Alimentos não perecíveis
-                    </li>
-
-                    <li>
-                        Roupas e cobertores
-                    </li>
-
-                    <li>
-                        Materiais escolares
-                    </li>
-
-                    <li>
-                        Contribuições financeiras
-                    </li>
-
+                    <li>Alimentos não perecíveis</li>
+                    <li>Roupas e cobertores</li>
+                    <li>Materiais escolares</li>
+                    <li>Contribuições financeiras</li>
                 </ul>
 
-                <h3>
-                    Como doar
-                </h3>
+                <h3>Como doar</h3>
 
                 <p>
                     Para saber como realizar uma doação,
                     entre em contato conosco pelo e-mail
-                    contato@esperancaemacao.org.
+                    <a href="mailto:contato@esperancaemacao.org">
+                        contato@esperancaemacao.org
+                    </a>.
                 </p>
 
             </section>
@@ -548,21 +486,17 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       PÁGINA DE CADASTRO
-    ====================================== */
-
     cadastro() {
 
         return `
 
-            <section>
+            <section aria-labelledby="titulo-cadastro">
 
-                <h2>
+                <h2 id="titulo-cadastro">
                     Cadastro de voluntário
                 </h2>
 
-                <p>
+                <p id="descricao-formulario">
                     Preencha o formulário abaixo para demonstrar
                     seu interesse em participar das ações voluntárias
                     da Esperança em Ação.
@@ -578,6 +512,7 @@ window.AppTemplates = {
 
                         <label for="nome">
                             Nome completo:
+                            <span aria-hidden="true">*</span>
                         </label>
 
                         <input
@@ -586,6 +521,9 @@ window.AppTemplates = {
                             name="nome"
                             autocomplete="name"
                             required
+                            minlength="3"
+                            aria-required="true"
+                            aria-describedby="erro-nome"
                         >
 
                         <small
@@ -600,6 +538,7 @@ window.AppTemplates = {
 
                         <label for="email">
                             E-mail:
+                            <span aria-hidden="true">*</span>
                         </label>
 
                         <input
@@ -608,6 +547,8 @@ window.AppTemplates = {
                             name="email"
                             autocomplete="email"
                             required
+                            aria-required="true"
+                            aria-describedby="erro-email"
                         >
 
                         <small
@@ -622,6 +563,7 @@ window.AppTemplates = {
 
                         <label for="telefone">
                             Telefone:
+                            <span aria-hidden="true">*</span>
                         </label>
 
                         <input
@@ -630,7 +572,10 @@ window.AppTemplates = {
                             name="telefone"
                             autocomplete="tel"
                             placeholder="(11) 99999-9999"
+                            inputmode="tel"
                             required
+                            aria-required="true"
+                            aria-describedby="erro-telefone"
                         >
 
                         <small
@@ -645,12 +590,15 @@ window.AppTemplates = {
 
                         <label for="area">
                             Área de interesse:
+                            <span aria-hidden="true">*</span>
                         </label>
 
                         <select
                             id="area"
                             name="area"
                             required
+                            aria-required="true"
+                            aria-describedby="erro-area"
                         >
 
                             <option value="">
@@ -683,7 +631,7 @@ window.AppTemplates = {
                     </div>
 
 
-                    <div class="campo">
+                    <div class="campo campo-largo">
 
                         <label for="mensagem">
                             Por que deseja ser voluntário?
@@ -693,6 +641,8 @@ window.AppTemplates = {
                             id="mensagem"
                             name="mensagem"
                             placeholder="Conte um pouco sobre seu interesse..."
+                            minlength="10"
+                            aria-describedby="erro-mensagem"
                         ></textarea>
 
                         <small
@@ -716,6 +666,7 @@ window.AppTemplates = {
                         class="feedback-formulario"
                         role="alert"
                         aria-live="polite"
+                        aria-atomic="true"
                     ></div>
 
                 </form>
@@ -725,17 +676,13 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       PÁGINA SOBRE NÓS
-    ====================================== */
-
     paginaSobre() {
 
         return `
 
-            <section>
+            <section aria-labelledby="titulo-sobre-pagina">
 
-                <h2>
+                <h2 id="titulo-sobre-pagina">
                     Sobre nós
                 </h2>
 
@@ -745,9 +692,7 @@ window.AppTemplates = {
                     precisam de apoio.
                 </p>
 
-                <h3>
-                    Nossa missão
-                </h3>
+                <h3>Nossa missão</h3>
 
                 <p>
                     Promover ações sociais que contribuam para melhorar
@@ -755,9 +700,7 @@ window.AppTemplates = {
                     a solidariedade.
                 </p>
 
-                <h3>
-                    Como atuamos
-                </h3>
+                <h3>Como atuamos</h3>
 
                 <p>
                     Desenvolvemos projetos sociais, campanhas de
@@ -765,9 +708,7 @@ window.AppTemplates = {
                     a participação da comunidade.
                 </p>
 
-                <h3>
-                    Nosso objetivo
-                </h3>
+                <h3>Nosso objetivo</h3>
 
                 <p>
                     Criar oportunidades para que pessoas possam
@@ -778,9 +719,9 @@ window.AppTemplates = {
             </section>
 
 
-            <section>
+            <section aria-labelledby="titulo-ajuda-sobre">
 
-                <h2>
+                <h2 id="titulo-ajuda-sobre">
                     Como você pode ajudar
                 </h2>
 
@@ -803,17 +744,13 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       PÁGINA DE CONTATO
-    ====================================== */
-
     paginaContato() {
 
         return `
 
-            <section>
+            <section aria-labelledby="titulo-contato">
 
-                <h2>
+                <h2 id="titulo-contato">
                     Entre em contato
                 </h2>
 
@@ -823,25 +760,23 @@ window.AppTemplates = {
                     Entre em contato conosco.
                 </p>
 
-                <h3>
-                    E-mail
-                </h3>
+                <h3>E-mail</h3>
 
                 <p>
-                    contato@esperancaemacao.org
+                    <a href="mailto:contato@esperancaemacao.org">
+                        contato@esperancaemacao.org
+                    </a>
                 </p>
 
-                <h3>
-                    Telefone
-                </h3>
+                <h3>Telefone</h3>
 
                 <p>
-                    (11) 99999-9999
+                    <a href="tel:+5511999999999">
+                        (11) 99999-9999
+                    </a>
                 </p>
 
-                <h3>
-                    Atendimento
-                </h3>
+                <h3>Atendimento</h3>
 
                 <p>
                     Nossa equipe está disponível para tirar dúvidas
@@ -852,9 +787,9 @@ window.AppTemplates = {
             </section>
 
 
-            <section>
+            <section aria-labelledby="titulo-participar">
 
-                <h2>
+                <h2 id="titulo-participar">
                     Quer participar?
                 </h2>
 
@@ -877,17 +812,17 @@ window.AppTemplates = {
     },
 
 
-    /* ======================================
-       PÁGINA NÃO ENCONTRADA
-    ====================================== */
-
     naoEncontrado() {
 
         return `
 
-            <section>
+            <section
+                class="feedback-formulario erro"
+                aria-labelledby="titulo-nao-encontrado"
+                role="alert"
+            >
 
-                <h2>
+                <h2 id="titulo-nao-encontrado">
                     Página não encontrada
                 </h2>
 
@@ -910,3 +845,11 @@ window.AppTemplates = {
     }
 
 };
+
+Object.keys(appTemplates).forEach((chave) => {
+    if (typeof appTemplates[chave] === "function") {
+        appTemplates[chave] = appTemplates[chave].bind(appTemplates);
+    }
+});
+
+window.AppTemplates = appTemplates;

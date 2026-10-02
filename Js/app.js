@@ -12,8 +12,8 @@
 ========================================== */
 
 document.addEventListener(
-    "DOMContentLoaded",
-    iniciarAplicacao
+	"DOMContentLoaded",
+	iniciarAplicacao
 );
 
 
@@ -23,118 +23,118 @@ document.addEventListener(
 
 function iniciarAplicacao() {
 
-    console.log(
-        "Iniciando Esperança em Ação..."
-    );
+	console.log(
+		"Iniciando Esperança em Ação..."
+	);
 
 
-    try {
+	try {
 
-        /* ==================================
-           VERIFICAR ELEMENTO PRINCIPAL
-        ================================== */
+		/* ==================================
+		   VERIFICAR ELEMENTO PRINCIPAL
+		================================== */
 
-        const app =
-            document.getElementById("app");
-
-
-        if (!app) {
-
-            throw new Error(
-                "O elemento #app não foi encontrado no index.html."
-            );
-        }
+		const app =
+			document.getElementById("app");
 
 
-        /* ==================================
-           VERIFICAR STORAGE.JS
-        ================================== */
+		if (!app) {
 
-        if (
-            typeof window.AppStorage === "undefined"
-        ) {
-
-            throw new Error(
-                "A dependência storage.js não foi carregada."
-            );
-        }
+			throw new Error(
+				"O elemento #app não foi encontrado no index.html."
+			);
+		}
 
 
-        /* ==================================
-           VERIFICAR TEMPLATES.JS
-        ================================== */
+		/* ==================================
+		   VERIFICAR STORAGE.JS
+		================================== */
 
-        if (
-            typeof window.AppTemplates === "undefined"
-        ) {
+		if (
+			typeof window.AppStorage === "undefined"
+		) {
 
-            throw new Error(
-                "A dependência templates.js não foi carregada."
-            );
-        }
-
-
-        /* ==================================
-           VERIFICAR FORMULARIO.JS
-        ================================== */
-
-        if (
-            typeof window.AppForm === "undefined"
-        ) {
-
-            throw new Error(
-                "A dependência formulario.js não foi carregada."
-            );
-        }
+			throw new Error(
+				"A dependência storage.js não foi carregada."
+			);
+		}
 
 
-        /* ==================================
-           VERIFICAR NAVEGACAO.JS
-        ================================== */
+		/* ==================================
+		   VERIFICAR TEMPLATES.JS
+		================================== */
 
-        if (
-            typeof window.AppNavigation === "undefined"
-        ) {
+		if (
+			typeof window.AppTemplates === "undefined"
+		) {
 
-            throw new Error(
-                "A dependência navegacao.js não foi carregada."
-            );
-        }
-
-
-        /* ==================================
-           VERIFICAR FUNÇÃO DE NAVEGAÇÃO
-        ================================== */
-
-        if (
-            typeof window.AppNavigation.iniciar !== "function"
-        ) {
-
-            throw new Error(
-                "A função AppNavigation.iniciar() não está disponível."
-            );
-        }
+			throw new Error(
+				"A dependência templates.js não foi carregada."
+			);
+		}
 
 
-        /* ==================================
-           INICIAR A SPA
-        ================================== */
+		/* ==================================
+		   VERIFICAR FORMULARIO.JS
+		================================== */
 
-        window.AppNavigation.iniciar();
+		if (
+			typeof window.AppForm === "undefined"
+		) {
+
+			throw new Error(
+				"A dependência formulario.js não foi carregada."
+			);
+		}
 
 
-        console.log(
-            "Esperança em Ação iniciada com sucesso."
-        );
+		/* ==================================
+		   VERIFICAR NAVEGACAO.JS
+		================================== */
 
-    }
+		if (
+			typeof window.AppNavigation === "undefined"
+		) {
 
-    catch (erro) {
+			throw new Error(
+				"A dependência navegacao.js não foi carregada."
+			);
+		}
 
-        tratarErroInicializacao(
-            erro
-        );
-    }
+
+		/* ==================================
+		   VERIFICAR FUNÇÃO DE NAVEGAÇÃO
+		================================== */
+
+		if (
+			typeof window.AppNavigation.iniciar !== "function"
+		) {
+
+			throw new Error(
+				"A função AppNavigation.iniciar() não está disponível."
+			);
+		}
+
+
+		/* ==================================
+		   INICIAR A SPA
+		================================== */
+
+		window.AppNavigation.iniciar();
+
+
+		console.log(
+			"Esperança em Ação iniciada com sucesso."
+		);
+
+	}
+
+	catch (erro) {
+
+		tratarErroInicializacao(
+			erro
+		);
+	}
 }
 
 
@@ -144,49 +144,68 @@ function iniciarAplicacao() {
 
 function tratarErroInicializacao(erro) {
 
-    console.error(
-        "Erro ao iniciar a aplicação:",
-        erro
-    );
+	console.error(
+		"Erro ao iniciar a aplicação:",
+		erro
+	);
 
 
-    const app =
-        document.getElementById("app");
+	const app =
+		document.getElementById("app");
 
 
-    if (!app) {
-        return;
-    }
+	if (!app) {
+		return;
+	}
 
 
-    app.innerHTML = `
+	app.innerHTML = `
 
-        <section class="erro-aplicacao">
+		<section
+			class="erro-aplicacao"
+			role="alert"
+			aria-labelledby="titulo-erro-aplicacao"
+		>
 
-            <h2>
-                Não foi possível carregar a aplicação
-            </h2>
+			<h2 id="titulo-erro-aplicacao">
+				Não foi possível carregar a aplicação
+			</h2>
 
-            <p>
-                Ocorreu um problema ao iniciar o sistema.
-                Verifique se todos os arquivos JavaScript
-                estão na pasta correta.
-            </p>
+			<p>
+				Ocorreu um problema ao iniciar o sistema.
+				Verifique se todos os arquivos JavaScript
+				estão na pasta correta.
+			</p>
 
-            <p>
-                Abra o console do navegador para ver
-                mais detalhes sobre o erro.
-            </p>
+			<p>
+				Abra o console do navegador para ver
+				mais detalhes sobre o erro.
+			</p>
 
-            <button
-                type="button"
-                class="botao"
-                onclick="location.reload()"
-            >
-                Tentar novamente
-            </button>
+			<button
+				type="button"
+				class="botao"
+				id="botao-recarregar"
+			>
+				Tentar novamente
+			</button>
 
-        </section>
+		</section>
 
-    `;
+	`;
+
+
+	const botaoRecarregar =
+		document.getElementById(
+			"botao-recarregar"
+		);
+
+
+	if (botaoRecarregar) {
+
+		botaoRecarregar.addEventListener(
+			"click",
+			() => window.location.reload()
+		);
+	}
 }
